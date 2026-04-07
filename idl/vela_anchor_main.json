@@ -1,0 +1,7374 @@
+{
+  "address": "FW6P7G9yPBqGAGsZ6Aa7upC9whF69QMH4ZJaBJjFsLVK",
+  "metadata": {
+    "name": "vela_anchor",
+    "version": "0.1.0",
+    "spec": "0.1.0",
+    "description": "Created with Anchor"
+  },
+  "instructions": [
+    {
+      "name": "add_referral",
+      "docs": [
+        "Add referrer (automatically select available storage)"
+      ],
+      "discriminator": [
+        17,
+        1,
+        214,
+        73,
+        159,
+        75,
+        44,
+        154
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "wallet_signer",
+          "docs": [
+            "Wallet owner must sign to prove ownership, prevents frontrunning attacks",
+            "mut: needed because registration fee is deducted from this account"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  102,
+                  101,
+                  114,
+                  114,
+                  97,
+                  108,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1",
+          "docs": [
+            "Explicitly pass all 9 storage PDAs (use UncheckedAccount for manual realloc)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "storage_2",
+          "writable": true
+        },
+        {
+          "name": "storage_3",
+          "writable": true
+        },
+        {
+          "name": "storage_4",
+          "writable": true
+        },
+        {
+          "name": "storage_5",
+          "writable": true
+        },
+        {
+          "name": "storage_6",
+          "writable": true
+        },
+        {
+          "name": "storage_7",
+          "writable": true
+        },
+        {
+          "name": "storage_8",
+          "writable": true
+        },
+        {
+          "name": "storage_9",
+          "writable": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "Wallet ID mapping account"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_state",
+          "docs": [
+            "全局状态（读取 referral_fee_wallet 地址）"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "referral_fee_wallet",
+          "docs": [
+            "推荐人注册费收款钱包（必须与 global_state.referral_fee_wallet 一致）"
+          ],
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "wallet",
+          "type": "pubkey"
+        },
+        {
+          "name": "parent_id",
+          "type": "u32"
+        }
+      ],
+      "returns": "u32"
+    },
+    {
+      "name": "bind_nft",
+      "docs": [
+        "Bind NFT to user account"
+      ],
+      "discriminator": [
+        209,
+        168,
+        61,
+        245,
+        55,
+        153,
+        134,
+        34
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint account"
+          ]
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User's token account holding the NFT"
+          ],
+          "writable": true
+        },
+        {
+          "name": "nft_metadata",
+          "docs": [
+            "NFT metadata account — PDA derived from nft_mint, verified by Metaplex program"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  11,
+                  112,
+                  101,
+                  177,
+                  227,
+                  209,
+                  124,
+                  69,
+                  56,
+                  157,
+                  82,
+                  127,
+                  107,
+                  4,
+                  195,
+                  205,
+                  88,
+                  184,
+                  108,
+                  115,
+                  26,
+                  160,
+                  253,
+                  181,
+                  73,
+                  182,
+                  209,
+                  188,
+                  3,
+                  248,
+                  41,
+                  70
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                11,
+                112,
+                101,
+                177,
+                227,
+                209,
+                124,
+                69,
+                56,
+                157,
+                82,
+                127,
+                107,
+                4,
+                195,
+                205,
+                88,
+                184,
+                108,
+                115,
+                26,
+                160,
+                253,
+                181,
+                73,
+                182,
+                209,
+                188,
+                3,
+                248,
+                41,
+                70
+              ]
+            }
+          }
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state PDA (seeds: [NFT_BINDING_SEED, nft_mint])"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state PDA (seeds: [USER_STATE_SEED, user])"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "diamond_collection_state",
+          "docs": [
+            "Diamond collection state (for verification)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  97,
+                  109,
+                  111,
+                  110,
+                  100,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "gold_collection_state",
+          "docs": [
+            "Gold collection state (for verification)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  111,
+                  108,
+                  100,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_community_profit",
+      "docs": [
+        "Claim community profit: claim community rewards"
+      ],
+      "discriminator": [
+        6,
+        207,
+        0,
+        72,
+        32,
+        241,
+        225,
+        236
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "User wallet ID mapping (must exist)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1",
+          "writable": true
+        },
+        {
+          "name": "storage_2",
+          "writable": true
+        },
+        {
+          "name": "storage_3",
+          "writable": true
+        },
+        {
+          "name": "storage_4",
+          "writable": true
+        },
+        {
+          "name": "storage_5",
+          "writable": true
+        },
+        {
+          "name": "storage_6",
+          "writable": true
+        },
+        {
+          "name": "storage_7",
+          "writable": true
+        },
+        {
+          "name": "storage_8",
+          "writable": true
+        },
+        {
+          "name": "storage_9",
+          "writable": true
+        },
+        {
+          "name": "global_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "locked_vault",
+          "docs": [
+            "locked_vault PDA (used for signing)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  101,
+                  100,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "locked_vault.token_mint",
+                "account": "LockedTokenVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "docs": [
+            "Token pool account (pays community rewards)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User token account (receives community rewards)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_interest",
+      "docs": [
+        "Claim interest: claim accumulated interest for a specific order (including NFT bonus and tax)"
+      ],
+      "discriminator": [
+        62,
+        142,
+        132,
+        209,
+        206,
+        8,
+        79,
+        175
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_stake_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User token account (receives interest)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "locked_vault",
+          "docs": [
+            "locked_vault PDA (used for signing)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "vault_token_account",
+          "docs": [
+            "Token pool account (pays interest)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "dead_address_token_account",
+          "docs": [
+            "Dead address token account (receives interest tax)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "User wallet ID mapping (must exist)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1",
+          "writable": true
+        },
+        {
+          "name": "storage_2",
+          "writable": true
+        },
+        {
+          "name": "storage_3",
+          "writable": true
+        },
+        {
+          "name": "storage_4",
+          "writable": true
+        },
+        {
+          "name": "storage_5",
+          "writable": true
+        },
+        {
+          "name": "storage_6",
+          "writable": true
+        },
+        {
+          "name": "storage_7",
+          "writable": true
+        },
+        {
+          "name": "storage_8",
+          "writable": true
+        },
+        {
+          "name": "storage_9",
+          "writable": true
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state account (optional, used to query bound NFT)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state account (optional, used to query node type)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "user_nft_account",
+          "docs": [
+            "User's NFT token account (optional, used to verify NFT ownership)",
+            "Note: Constraints removed because they cause access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_index",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "claim_node_pool_reward",
+      "docs": [
+        "Claim node pool reward (for Diamond/Gold node users)"
+      ],
+      "discriminator": [
+        141,
+        197,
+        53,
+        206,
+        54,
+        157,
+        151,
+        117
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "global_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint (used for NftBindingState PDA derivation)"
+          ]
+        },
+        {
+          "name": "nft_binding_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_nft_account",
+          "docs": [
+            "User's NFT token account (verifies still holding the NFT)"
+          ]
+        },
+        {
+          "name": "locked_vault",
+          "docs": [
+            "locked_vault PDA (used for signing transfers)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  101,
+                  100,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "locked_vault.token_mint",
+                "account": "LockedTokenVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "docs": [
+            "Vault token account (outgoing funds)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User's stake token account (receives payment)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "locked_vault.token_mint",
+                "account": "LockedTokenVault"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "referral_storage_1",
+          "writable": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "claim_released_tokens",
+      "docs": [
+        "Claim released tokens from bound NFT"
+      ],
+      "discriminator": [
+        207,
+        145,
+        204,
+        86,
+        165,
+        37,
+        29,
+        210
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint account"
+          ]
+        },
+        {
+          "name": "user_nft_token_account",
+          "docs": [
+            "User's token account holding the NFT"
+          ]
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User's token account for receiving released tokens"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "airdrop_vault.token_mint",
+                "account": "AirdropVault"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state PDA"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state PDA"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "airdrop_vault",
+          "docs": [
+            "Airdrop vault PDA (replaces locked_vault for NFT airdrops)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  105,
+                  114,
+                  100,
+                  114,
+                  111,
+                  112,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "airdrop_vault.token_mint",
+                "account": "AirdropVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "airdrop_vault_token_account",
+          "docs": [
+            "Airdrop vault token account"
+          ],
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "create_diamond_collection",
+      "docs": [
+        "Create Diamond Node Collection"
+      ],
+      "discriminator": [
+        246,
+        12,
+        53,
+        169,
+        158,
+        35,
+        247,
+        219
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "collection_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collection_mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "diamond_collection_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  97,
+                  109,
+                  111,
+                  110,
+                  100,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collection_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "collection_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "collection_metadata",
+          "writable": true
+        },
+        {
+          "name": "collection_master_edition",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_gold_collection",
+      "docs": [
+        "Create Gold Node Collection"
+      ],
+      "discriminator": [
+        171,
+        15,
+        2,
+        210,
+        81,
+        71,
+        31,
+        1
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "collection_authority",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110,
+                  95,
+                  97,
+                  117,
+                  116,
+                  104,
+                  111,
+                  114,
+                  105,
+                  116,
+                  121
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collection_mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "gold_collection_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  111,
+                  108,
+                  100,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "collection_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "collection_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "collection_metadata",
+          "writable": true
+        },
+        {
+          "name": "collection_master_edition",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "create_stake",
+      "docs": [
+        "Create a new staking order"
+      ],
+      "discriminator": [
+        201,
+        134,
+        55,
+        171,
+        2,
+        136,
+        228,
+        226
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_stake_account",
+          "docs": [
+            "Box is used to move this large account to heap instead of stack"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_state",
+          "docs": [
+            "Box is used to reduce stack usage"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token_account",
+          "writable": true
+        },
+        {
+          "name": "locked_vault",
+          "docs": [
+            "locked_vault PDA (for validation)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "vault_token_account",
+          "docs": [
+            "Vault token account (receives staked principal)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "User wallet ID mapping (must exist, proves user has bound referrer)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1",
+          "writable": true
+        },
+        {
+          "name": "storage_2",
+          "writable": true
+        },
+        {
+          "name": "storage_3",
+          "writable": true
+        },
+        {
+          "name": "storage_4",
+          "writable": true
+        },
+        {
+          "name": "storage_5",
+          "writable": true
+        },
+        {
+          "name": "storage_6",
+          "writable": true
+        },
+        {
+          "name": "storage_7",
+          "writable": true
+        },
+        {
+          "name": "storage_8",
+          "writable": true
+        },
+        {
+          "name": "storage_9",
+          "writable": true
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state account (optional, used to query bound NFT)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state account (optional, used to query node type)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "user_nft_account",
+          "docs": [
+            "User's NFT token account (optional, used to verify NFT ownership)",
+            "Note: Constraints removed because they cause access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        },
+        {
+          "name": "period_type",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "debug_close_referral_storage",
+      "docs": [
+        "Debug: Close ReferralStorage PDA"
+      ],
+      "discriminator": [
+        179,
+        132,
+        50,
+        11,
+        237,
+        98,
+        19,
+        205
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true
+        }
+      ],
+      "args": [
+        {
+          "name": "storage_index",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "debug_reinit_referral_storage",
+      "docs": [
+        "Debug: Reinitialize ReferralStorage PDA"
+      ],
+      "discriminator": [
+        215,
+        95,
+        177,
+        245,
+        85,
+        130,
+        88,
+        253
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "storage_index",
+          "type": "u8"
+        },
+        {
+          "name": "target_count",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "deposit_airdrop_fund",
+      "docs": [
+        "存入空投基金（任何人都可以存入）"
+      ],
+      "discriminator": [
+        104,
+        188,
+        187,
+        212,
+        17,
+        254,
+        32,
+        41
+      ],
+      "accounts": [
+        {
+          "name": "depositor",
+          "docs": [
+            "存入者（任何人都可以，无权限限制）"
+          ],
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "airdrop_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  105,
+                  114,
+                  100,
+                  114,
+                  111,
+                  112,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "airdrop_vault.token_mint",
+                "account": "AirdropVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "depositor_token_account",
+          "docs": [
+            "存入者的 token 账户"
+          ],
+          "writable": true
+        },
+        {
+          "name": "airdrop_vault_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "fix_week_number_debug",
+      "docs": [
+        "Debug: Fix week number to current real week"
+      ],
+      "discriminator": [
+        63,
+        86,
+        179,
+        84,
+        148,
+        137,
+        75,
+        227
+      ],
+      "accounts": [
+        {
+          "name": "global_state",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "get_referral",
+      "docs": [
+        "Get referrer information"
+      ],
+      "discriminator": [
+        159,
+        34,
+        148,
+        223,
+        222,
+        28,
+        144,
+        86
+      ],
+      "accounts": [
+        {
+          "name": "storage_1",
+          "docs": [
+            "Explicitly pass all 9 storage PDAs (read-only)"
+          ]
+        },
+        {
+          "name": "storage_2"
+        },
+        {
+          "name": "storage_3"
+        },
+        {
+          "name": "storage_4"
+        },
+        {
+          "name": "storage_5"
+        },
+        {
+          "name": "storage_6"
+        },
+        {
+          "name": "storage_7"
+        },
+        {
+          "name": "storage_8"
+        },
+        {
+          "name": "storage_9"
+        }
+      ],
+      "args": [
+        {
+          "name": "referral_id",
+          "type": "u32"
+        }
+      ],
+      "returns": {
+        "defined": {
+          "name": "ReferralData"
+        }
+      }
+    },
+    {
+      "name": "get_wallet_id",
+      "docs": [
+        "Get referrer ID by wallet address"
+      ],
+      "discriminator": [
+        178,
+        86,
+        20,
+        138,
+        199,
+        195,
+        71,
+        159
+      ],
+      "accounts": [
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "Wallet ID mapping account"
+          ]
+        }
+      ],
+      "args": [
+        {
+          "name": "wallet",
+          "type": "pubkey"
+        }
+      ],
+      "returns": {
+        "option": "u32"
+      }
+    },
+    {
+      "name": "get_wallet_info",
+      "docs": [
+        "Get complete wallet information (wallet -> referral_id -> WalletInfoResult with parent_wallet)"
+      ],
+      "discriminator": [
+        84,
+        88,
+        202,
+        85,
+        143,
+        168,
+        42,
+        48
+      ],
+      "accounts": [
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "Wallet ID mapping account"
+          ]
+        },
+        {
+          "name": "storage_1",
+          "docs": [
+            "Explicitly pass all 9 storage PDAs (read-only)"
+          ]
+        },
+        {
+          "name": "storage_2"
+        },
+        {
+          "name": "storage_3"
+        },
+        {
+          "name": "storage_4"
+        },
+        {
+          "name": "storage_5"
+        },
+        {
+          "name": "storage_6"
+        },
+        {
+          "name": "storage_7"
+        },
+        {
+          "name": "storage_8"
+        },
+        {
+          "name": "storage_9"
+        }
+      ],
+      "args": [
+        {
+          "name": "wallet",
+          "type": "pubkey"
+        }
+      ],
+      "returns": {
+        "option": {
+          "defined": {
+            "name": "WalletInfoResult"
+          }
+        }
+      }
+    },
+    {
+      "name": "initialize_global",
+      "docs": [
+        "Initialize global state (combines LockedTokenVault + GlobalState)"
+      ],
+      "discriminator": [
+        47,
+        225,
+        15,
+        112,
+        86,
+        51,
+        190,
+        231
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "locked_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  101,
+                  100,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "token_mint"
+        },
+        {
+          "name": "airdrop_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  97,
+                  105,
+                  114,
+                  100,
+                  114,
+                  111,
+                  112,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "token_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "airdrop_vault_token_account",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "global_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "referral_fee_wallet",
+          "docs": [
+            "Dedicated wallet for receiving referral registration fees (a regular SOL wallet, specified by the admin)"
+          ]
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "initialize_referral_manager",
+      "docs": [
+        "Initialize ReferralManager and 9 ReferralStorage PDAs with root user"
+      ],
+      "discriminator": [
+        199,
+        83,
+        241,
+        241,
+        132,
+        63,
+        162,
+        233
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "manager",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  114,
+                  101,
+                  102,
+                  101,
+                  114,
+                  114,
+                  97,
+                  108,
+                  95,
+                  109,
+                  97,
+                  110,
+                  97,
+                  103,
+                  101,
+                  114
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1",
+          "writable": true
+        },
+        {
+          "name": "storage_2",
+          "writable": true
+        },
+        {
+          "name": "storage_3",
+          "writable": true
+        },
+        {
+          "name": "storage_4",
+          "writable": true
+        },
+        {
+          "name": "storage_5",
+          "writable": true
+        },
+        {
+          "name": "storage_6",
+          "writable": true
+        },
+        {
+          "name": "storage_7",
+          "writable": true
+        },
+        {
+          "name": "storage_8",
+          "writable": true
+        },
+        {
+          "name": "storage_9",
+          "writable": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "Wallet ID mapping account for root user"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "arg",
+                "path": "root_wallet"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "root_wallet",
+          "type": "pubkey"
+        }
+      ]
+    },
+    {
+      "name": "lock_tokens",
+      "docs": [
+        "Lock tokens into the vault"
+      ],
+      "discriminator": [
+        136,
+        11,
+        32,
+        232,
+        161,
+        117,
+        54,
+        211
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "locked_vault",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  108,
+                  111,
+                  99,
+                  107,
+                  101,
+                  100,
+                  95,
+                  116,
+                  111,
+                  107,
+                  101,
+                  110,
+                  95,
+                  118,
+                  97,
+                  117,
+                  108,
+                  116,
+                  95,
+                  115,
+                  101,
+                  101,
+                  100
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "locked_vault.token_mint",
+                "account": "LockedTokenVault"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "locked_vault.token_mint",
+                "account": "LockedTokenVault"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "vault_token_account",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [
+        {
+          "name": "amount",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "migrate_referral_storage",
+      "docs": [
+        "Debug: Migrate ReferralStorage data"
+      ],
+      "discriminator": [
+        60,
+        104,
+        237,
+        166,
+        35,
+        218,
+        62,
+        17
+      ],
+      "accounts": [
+        {
+          "name": "authority",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "storage",
+          "writable": true
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "storage_index",
+          "type": "u8"
+        },
+        {
+          "name": "slot_offset",
+          "type": "u32"
+        },
+        {
+          "name": "records",
+          "type": {
+            "vec": {
+              "defined": {
+                "name": "ReferralData"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "mint_diamond_nft",
+      "docs": [
+        "Mint Diamond Node NFT (single)"
+      ],
+      "discriminator": [
+        38,
+        18,
+        243,
+        235,
+        77,
+        142,
+        238,
+        141
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "collection_mint"
+        },
+        {
+          "name": "collection_metadata",
+          "writable": true
+        },
+        {
+          "name": "collection_master_edition"
+        },
+        {
+          "name": "diamond_collection_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  100,
+                  105,
+                  97,
+                  109,
+                  111,
+                  110,
+                  100,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "nft_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "nft_metadata",
+          "writable": true
+        },
+        {
+          "name": "nft_master_edition",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "mint_gold_nft",
+      "docs": [
+        "Mint Gold Node NFT (single)"
+      ],
+      "discriminator": [
+        89,
+        106,
+        13,
+        247,
+        132,
+        144,
+        10,
+        84
+      ],
+      "accounts": [
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "collection_mint"
+        },
+        {
+          "name": "collection_metadata",
+          "writable": true
+        },
+        {
+          "name": "collection_master_edition"
+        },
+        {
+          "name": "gold_collection_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  111,
+                  108,
+                  100,
+                  95,
+                  99,
+                  111,
+                  108,
+                  108,
+                  101,
+                  99,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_mint",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "nft_token_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "payer"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "nft_metadata",
+          "writable": true
+        },
+        {
+          "name": "nft_master_edition",
+          "writable": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "metadata_program",
+          "address": "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        },
+        {
+          "name": "rent",
+          "address": "SysvarRent111111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "symbol",
+          "type": "string"
+        },
+        {
+          "name": "uri",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "query_community_status",
+      "docs": [
+        "Query community status: query user's community status and level (read-only)"
+      ],
+      "discriminator": [
+        250,
+        169,
+        105,
+        15,
+        228,
+        142,
+        119,
+        141
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "User wallet ID mapping (must exist)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1"
+        },
+        {
+          "name": "storage_2"
+        },
+        {
+          "name": "storage_3"
+        },
+        {
+          "name": "storage_4"
+        },
+        {
+          "name": "storage_5"
+        },
+        {
+          "name": "storage_6"
+        },
+        {
+          "name": "storage_7"
+        },
+        {
+          "name": "storage_8"
+        },
+        {
+          "name": "storage_9"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "CommunityStatusResult"
+        }
+      }
+    },
+    {
+      "name": "query_current_rates",
+      "docs": [
+        "Query current lock-up interest rates for all three tiers (read-only, affected by halving mechanism)"
+      ],
+      "discriminator": [
+        135,
+        237,
+        195,
+        225,
+        148,
+        72,
+        116,
+        149
+      ],
+      "accounts": [
+        {
+          "name": "global_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "CurrentRatesResult"
+        }
+      }
+    },
+    {
+      "name": "query_node_pool_reward",
+      "docs": [
+        "Query node pool reward amount for a specific user (read-only)"
+      ],
+      "discriminator": [
+        2,
+        238,
+        36,
+        143,
+        71,
+        133,
+        213,
+        226
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "docs": [
+            "User (for ownership verification)"
+          ]
+        },
+        {
+          "name": "global_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint (used for NftBindingState PDA derivation)"
+          ]
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "User's NftBindingState (to determine node type and claim status)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_nft_account",
+          "docs": [
+            "User's NFT token account (verifies still holding the NFT)"
+          ]
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "NodePoolRewardResult"
+        }
+      }
+    },
+    {
+      "name": "query_node_pool_status",
+      "docs": [
+        "Query node pool status (read-only)"
+      ],
+      "discriminator": [
+        89,
+        84,
+        194,
+        236,
+        150,
+        216,
+        199,
+        247
+      ],
+      "accounts": [
+        {
+          "name": "global_state",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "Optional: user's NftBindingState (query personal claim status)"
+          ],
+          "optional": true
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "NodePoolStatusResult"
+        }
+      }
+    },
+    {
+      "name": "query_pending_interest",
+      "docs": [
+        "Query pending interest: query the expected pending interest for a specific order (read-only)"
+      ],
+      "discriminator": [
+        227,
+        136,
+        140,
+        56,
+        10,
+        213,
+        233,
+        36
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "user_stake_account",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state account (optional, used to query bound NFT)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state account (optional, used to query node type)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "user_nft_account",
+          "docs": [
+            "User's NFT token account (optional, used to verify NFT ownership)",
+            "Note: Constraints removed because they cause access violations when Option is None"
+          ],
+          "optional": true
+        }
+      ],
+      "args": [
+        {
+          "name": "order_index",
+          "type": "u8"
+        }
+      ],
+      "returns": {
+        "defined": {
+          "name": "PendingInterestResult"
+        }
+      }
+    },
+    {
+      "name": "query_releasable_tokens",
+      "docs": [
+        "Query releasable token amount for bound NFT"
+      ],
+      "discriminator": [
+        166,
+        10,
+        91,
+        208,
+        96,
+        219,
+        236,
+        244
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint account"
+          ]
+        },
+        {
+          "name": "user_nft_token_account",
+          "docs": [
+            "User's token account holding the NFT"
+          ]
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state PDA"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state PDA"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "TokenReleaseInfo"
+        }
+      }
+    },
+    {
+      "name": "rebind_nft",
+      "docs": [
+        "Rebind NFT to new owner"
+      ],
+      "discriminator": [
+        14,
+        219,
+        16,
+        140,
+        188,
+        8,
+        167,
+        255
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint account"
+          ]
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "New owner's token account holding the NFT"
+          ],
+          "writable": true
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state PDA (must exist)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "New owner's user state PDA"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "old_owner_state",
+          "docs": [
+            "Old owner's user state PDA"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_binding_state.owner",
+                "account": "NftBindingState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unbind_nft",
+      "docs": [
+        "Unbind NFT (when user no longer holds the NFT)"
+      ],
+      "discriminator": [
+        233,
+        237,
+        51,
+        236,
+        234,
+        158,
+        55,
+        243
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state PDA"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state PDA (verified via seeds derived from user_state.bound_nft_mint)"
+          ],
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  110,
+                  102,
+                  116,
+                  95,
+                  98,
+                  105,
+                  110,
+                  100,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user_state.bound_nft_mint",
+                "account": "UserState"
+              }
+            ]
+          }
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint account (must match bound mint)"
+          ]
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User's ATA for the bound NFT mint (deterministic, prevents bypass with alternate accounts)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "account",
+                "path": "user"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  6,
+                  221,
+                  246,
+                  225,
+                  215,
+                  101,
+                  161,
+                  147,
+                  217,
+                  203,
+                  225,
+                  70,
+                  206,
+                  235,
+                  121,
+                  172,
+                  28,
+                  180,
+                  133,
+                  237,
+                  95,
+                  91,
+                  55,
+                  145,
+                  58,
+                  140,
+                  245,
+                  133,
+                  126,
+                  255,
+                  0,
+                  169
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                140,
+                151,
+                37,
+                143,
+                78,
+                36,
+                137,
+                241,
+                187,
+                61,
+                16,
+                41,
+                20,
+                142,
+                13,
+                131,
+                11,
+                90,
+                19,
+                153,
+                218,
+                255,
+                16,
+                132,
+                4,
+                142,
+                123,
+                216,
+                219,
+                233,
+                248,
+                89
+              ]
+            }
+          }
+        },
+        {
+          "name": "associated_token_program",
+          "address": "ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "unstake",
+      "docs": [
+        "Unstake: redeem principal and remaining interest after period ends"
+      ],
+      "discriminator": [
+        90,
+        95,
+        107,
+        42,
+        205,
+        124,
+        50,
+        225
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "writable": true,
+          "signer": true
+        },
+        {
+          "name": "user_stake_account",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  117,
+                  115,
+                  101,
+                  114,
+                  95,
+                  115,
+                  116,
+                  97,
+                  107,
+                  101
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "global_state",
+          "writable": true,
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  103,
+                  108,
+                  111,
+                  98,
+                  97,
+                  108,
+                  95,
+                  115,
+                  116,
+                  97,
+                  116,
+                  101
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User token account (receives principal + interest)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "locked_vault",
+          "docs": [
+            "locked_vault PDA (used as signing authority)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "vault_token_account",
+          "docs": [
+            "Vault token account (source of principal and interest)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "dead_address_token_account",
+          "docs": [
+            "Dead address token account (receives interest tax)"
+          ],
+          "writable": true
+        },
+        {
+          "name": "wallet_mapping",
+          "docs": [
+            "User wallet ID mapping (must exist)"
+          ],
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  119,
+                  97,
+                  108,
+                  108,
+                  101,
+                  116,
+                  95,
+                  105,
+                  100,
+                  95,
+                  109,
+                  97,
+                  112,
+                  112,
+                  105,
+                  110,
+                  103
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "user"
+              }
+            ]
+          }
+        },
+        {
+          "name": "storage_1",
+          "writable": true
+        },
+        {
+          "name": "storage_2",
+          "writable": true
+        },
+        {
+          "name": "storage_3",
+          "writable": true
+        },
+        {
+          "name": "storage_4",
+          "writable": true
+        },
+        {
+          "name": "storage_5",
+          "writable": true
+        },
+        {
+          "name": "storage_6",
+          "writable": true
+        },
+        {
+          "name": "storage_7",
+          "writable": true
+        },
+        {
+          "name": "storage_8",
+          "writable": true
+        },
+        {
+          "name": "storage_9",
+          "writable": true
+        },
+        {
+          "name": "user_state",
+          "docs": [
+            "User state account (optional, used to query bound NFT)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "NFT binding state account (optional, used to query node type)",
+            "Note: Seeds constraint removed because it causes access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "user_nft_account",
+          "docs": [
+            "User's NFT token account (optional, used to verify NFT ownership)",
+            "Note: Constraints removed because they cause access violations when Option is None"
+          ],
+          "optional": true
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        },
+        {
+          "name": "system_program",
+          "address": "11111111111111111111111111111111"
+        }
+      ],
+      "args": [
+        {
+          "name": "order_index",
+          "type": "u8"
+        }
+      ]
+    },
+    {
+      "name": "update_deposit_control_debug",
+      "docs": [
+        "Debug: Update deposit control fields"
+      ],
+      "discriminator": [
+        56,
+        76,
+        111,
+        141,
+        205,
+        236,
+        189,
+        236
+      ],
+      "accounts": [
+        {
+          "name": "global_state",
+          "docs": [
+            "GlobalState PDA"
+          ],
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "docs": [
+            "调用者（任意地址，无验证）"
+          ],
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "daily_deposit_cap",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "current_deposit_day",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "daily_deposited",
+          "type": {
+            "option": "u64"
+          }
+        },
+        {
+          "name": "total_staked",
+          "type": {
+            "option": "u64"
+          }
+        }
+      ]
+    },
+    {
+      "name": "update_global_state_debug",
+      "docs": [
+        "Debug: Update GlobalState total_output"
+      ],
+      "discriminator": [
+        85,
+        63,
+        201,
+        118,
+        246,
+        194,
+        62,
+        77
+      ],
+      "accounts": [
+        {
+          "name": "global_state",
+          "docs": [
+            "GlobalState PDA"
+          ],
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "docs": [
+            "调用者（任意地址，无验证）"
+          ],
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "new_total_output",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "update_referral_debug",
+      "docs": [
+        "Debug: Update ReferralData total_staked and self_staked"
+      ],
+      "discriminator": [
+        190,
+        60,
+        74,
+        11,
+        53,
+        134,
+        33,
+        55
+      ],
+      "accounts": [
+        {
+          "name": "referral_data",
+          "writable": true
+        },
+        {
+          "name": "payer",
+          "writable": true,
+          "signer": true
+        }
+      ],
+      "args": [
+        {
+          "name": "referral_id",
+          "type": "u32"
+        },
+        {
+          "name": "new_total_staked",
+          "type": "u64"
+        },
+        {
+          "name": "new_self_staked",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "verify_binding",
+      "docs": [
+        "Verify NFT binding status"
+      ],
+      "discriminator": [
+        236,
+        129,
+        196,
+        147,
+        193,
+        16,
+        226,
+        187
+      ],
+      "accounts": [
+        {
+          "name": "user",
+          "signer": true
+        },
+        {
+          "name": "nft_mint",
+          "docs": [
+            "NFT mint account"
+          ]
+        },
+        {
+          "name": "user_token_account",
+          "docs": [
+            "User's token account holding the NFT"
+          ]
+        },
+        {
+          "name": "nft_binding_state",
+          "docs": [
+            "Validated manually in handler via PDA derivation and deserialization."
+          ]
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "BindingVerificationResult"
+        }
+      }
+    },
+    {
+      "name": "verify_diamond_ownership",
+      "docs": [
+        "Verify Diamond Node NFT ownership"
+      ],
+      "discriminator": [
+        157,
+        122,
+        47,
+        91,
+        211,
+        175,
+        165,
+        134
+      ],
+      "accounts": [
+        {
+          "name": "user"
+        },
+        {
+          "name": "nft_mint"
+        },
+        {
+          "name": "user_token_account"
+        },
+        {
+          "name": "nft_metadata",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  11,
+                  112,
+                  101,
+                  177,
+                  227,
+                  209,
+                  124,
+                  69,
+                  56,
+                  157,
+                  82,
+                  127,
+                  107,
+                  4,
+                  195,
+                  205,
+                  88,
+                  184,
+                  108,
+                  115,
+                  26,
+                  160,
+                  253,
+                  181,
+                  73,
+                  182,
+                  209,
+                  188,
+                  3,
+                  248,
+                  41,
+                  70
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                11,
+                112,
+                101,
+                177,
+                227,
+                209,
+                124,
+                69,
+                56,
+                157,
+                82,
+                127,
+                107,
+                4,
+                195,
+                205,
+                88,
+                184,
+                108,
+                115,
+                26,
+                160,
+                253,
+                181,
+                73,
+                182,
+                209,
+                188,
+                3,
+                248,
+                41,
+                70
+              ]
+            }
+          }
+        },
+        {
+          "name": "nft_master_edition",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  11,
+                  112,
+                  101,
+                  177,
+                  227,
+                  209,
+                  124,
+                  69,
+                  56,
+                  157,
+                  82,
+                  127,
+                  107,
+                  4,
+                  195,
+                  205,
+                  88,
+                  184,
+                  108,
+                  115,
+                  26,
+                  160,
+                  253,
+                  181,
+                  73,
+                  182,
+                  209,
+                  188,
+                  3,
+                  248,
+                  41,
+                  70
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  100,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                11,
+                112,
+                101,
+                177,
+                227,
+                209,
+                124,
+                69,
+                56,
+                157,
+                82,
+                127,
+                107,
+                4,
+                195,
+                205,
+                88,
+                184,
+                108,
+                115,
+                26,
+                160,
+                253,
+                181,
+                73,
+                182,
+                209,
+                188,
+                3,
+                248,
+                41,
+                70
+              ]
+            }
+          }
+        },
+        {
+          "name": "collection_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "DiamondOwnershipResult"
+        }
+      }
+    },
+    {
+      "name": "verify_gold_ownership",
+      "docs": [
+        "Verify Gold Node NFT ownership"
+      ],
+      "discriminator": [
+        179,
+        49,
+        97,
+        67,
+        203,
+        114,
+        40,
+        90
+      ],
+      "accounts": [
+        {
+          "name": "user"
+        },
+        {
+          "name": "nft_mint"
+        },
+        {
+          "name": "user_token_account"
+        },
+        {
+          "name": "nft_metadata",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  11,
+                  112,
+                  101,
+                  177,
+                  227,
+                  209,
+                  124,
+                  69,
+                  56,
+                  157,
+                  82,
+                  127,
+                  107,
+                  4,
+                  195,
+                  205,
+                  88,
+                  184,
+                  108,
+                  115,
+                  26,
+                  160,
+                  253,
+                  181,
+                  73,
+                  182,
+                  209,
+                  188,
+                  3,
+                  248,
+                  41,
+                  70
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                11,
+                112,
+                101,
+                177,
+                227,
+                209,
+                124,
+                69,
+                56,
+                157,
+                82,
+                127,
+                107,
+                4,
+                195,
+                205,
+                88,
+                184,
+                108,
+                115,
+                26,
+                160,
+                253,
+                181,
+                73,
+                182,
+                209,
+                188,
+                3,
+                248,
+                41,
+                70
+              ]
+            }
+          }
+        },
+        {
+          "name": "nft_master_edition",
+          "pda": {
+            "seeds": [
+              {
+                "kind": "const",
+                "value": [
+                  109,
+                  101,
+                  116,
+                  97,
+                  100,
+                  97,
+                  116,
+                  97
+                ]
+              },
+              {
+                "kind": "const",
+                "value": [
+                  11,
+                  112,
+                  101,
+                  177,
+                  227,
+                  209,
+                  124,
+                  69,
+                  56,
+                  157,
+                  82,
+                  127,
+                  107,
+                  4,
+                  195,
+                  205,
+                  88,
+                  184,
+                  108,
+                  115,
+                  26,
+                  160,
+                  253,
+                  181,
+                  73,
+                  182,
+                  209,
+                  188,
+                  3,
+                  248,
+                  41,
+                  70
+                ]
+              },
+              {
+                "kind": "account",
+                "path": "nft_mint"
+              },
+              {
+                "kind": "const",
+                "value": [
+                  101,
+                  100,
+                  105,
+                  116,
+                  105,
+                  111,
+                  110
+                ]
+              }
+            ],
+            "program": {
+              "kind": "const",
+              "value": [
+                11,
+                112,
+                101,
+                177,
+                227,
+                209,
+                124,
+                69,
+                56,
+                157,
+                82,
+                127,
+                107,
+                4,
+                195,
+                205,
+                88,
+                184,
+                108,
+                115,
+                26,
+                160,
+                253,
+                181,
+                73,
+                182,
+                209,
+                188,
+                3,
+                248,
+                41,
+                70
+              ]
+            }
+          }
+        },
+        {
+          "name": "collection_mint"
+        },
+        {
+          "name": "token_program",
+          "address": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+        }
+      ],
+      "args": [],
+      "returns": {
+        "defined": {
+          "name": "GoldOwnershipResult"
+        }
+      }
+    }
+  ],
+  "accounts": [
+    {
+      "name": "AirdropVault",
+      "discriminator": [
+        219,
+        6,
+        80,
+        249,
+        49,
+        85,
+        189,
+        182
+      ]
+    },
+    {
+      "name": "DiamondCollectionState",
+      "discriminator": [
+        176,
+        245,
+        197,
+        66,
+        91,
+        220,
+        32,
+        67
+      ]
+    },
+    {
+      "name": "GlobalState",
+      "discriminator": [
+        163,
+        46,
+        74,
+        168,
+        216,
+        123,
+        133,
+        98
+      ]
+    },
+    {
+      "name": "GoldCollectionState",
+      "discriminator": [
+        168,
+        253,
+        222,
+        119,
+        207,
+        180,
+        237,
+        122
+      ]
+    },
+    {
+      "name": "LockedTokenVault",
+      "discriminator": [
+        62,
+        29,
+        157,
+        176,
+        49,
+        48,
+        10,
+        190
+      ]
+    },
+    {
+      "name": "NftBindingState",
+      "discriminator": [
+        143,
+        143,
+        82,
+        70,
+        217,
+        54,
+        121,
+        39
+      ]
+    },
+    {
+      "name": "ReferralManager",
+      "discriminator": [
+        250,
+        195,
+        219,
+        113,
+        186,
+        23,
+        164,
+        241
+      ]
+    },
+    {
+      "name": "ReferralStorage",
+      "discriminator": [
+        110,
+        76,
+        250,
+        236,
+        63,
+        104,
+        5,
+        152
+      ]
+    },
+    {
+      "name": "UserStakeAccount",
+      "discriminator": [
+        167,
+        87,
+        153,
+        81,
+        129,
+        95,
+        15,
+        213
+      ]
+    },
+    {
+      "name": "UserState",
+      "discriminator": [
+        72,
+        177,
+        85,
+        249,
+        76,
+        167,
+        186,
+        126
+      ]
+    },
+    {
+      "name": "WalletIdMapping",
+      "discriminator": [
+        1,
+        94,
+        243,
+        116,
+        123,
+        219,
+        195,
+        97
+      ]
+    }
+  ],
+  "events": [
+    {
+      "name": "AirdropFundDepositedEvent",
+      "discriminator": [
+        18,
+        228,
+        221,
+        229,
+        229,
+        56,
+        175,
+        184
+      ]
+    },
+    {
+      "name": "CommunityProfitClaimedEvent",
+      "discriminator": [
+        198,
+        140,
+        236,
+        192,
+        203,
+        76,
+        156,
+        179
+      ]
+    },
+    {
+      "name": "DiamondVerificationEvent",
+      "discriminator": [
+        101,
+        38,
+        137,
+        27,
+        136,
+        219,
+        62,
+        47
+      ]
+    },
+    {
+      "name": "GoldVerificationEvent",
+      "discriminator": [
+        159,
+        24,
+        53,
+        183,
+        105,
+        0,
+        158,
+        43
+      ]
+    },
+    {
+      "name": "InterestClaimedEvent",
+      "discriminator": [
+        228,
+        236,
+        162,
+        239,
+        32,
+        37,
+        46,
+        8
+      ]
+    },
+    {
+      "name": "NodePoolRefreshed",
+      "discriminator": [
+        25,
+        184,
+        116,
+        30,
+        135,
+        120,
+        134,
+        220
+      ]
+    },
+    {
+      "name": "NodePoolRewardClaimed",
+      "discriminator": [
+        162,
+        189,
+        239,
+        232,
+        64,
+        154,
+        116,
+        249
+      ]
+    },
+    {
+      "name": "ReferralBindingEvent",
+      "discriminator": [
+        230,
+        102,
+        74,
+        244,
+        0,
+        150,
+        36,
+        193
+      ]
+    },
+    {
+      "name": "StakeCreatedEvent",
+      "discriminator": [
+        190,
+        83,
+        179,
+        237,
+        159,
+        142,
+        132,
+        108
+      ]
+    },
+    {
+      "name": "TokensClaimedEvent",
+      "discriminator": [
+        93,
+        215,
+        57,
+        103,
+        166,
+        229,
+        107,
+        50
+      ]
+    },
+    {
+      "name": "TokensLockedEvent",
+      "discriminator": [
+        38,
+        108,
+        105,
+        31,
+        112,
+        12,
+        58,
+        244
+      ]
+    },
+    {
+      "name": "UnstakedEvent",
+      "discriminator": [
+        186,
+        174,
+        247,
+        231,
+        242,
+        159,
+        68,
+        128
+      ]
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "InvalidPeriodType",
+      "msg": "Invalid stake period type"
+    },
+    {
+      "code": 6001,
+      "name": "InvalidAmount",
+      "msg": "Invalid stake amount (must be between 1,000 and 50,000 VELA)"
+    },
+    {
+      "code": 6002,
+      "name": "AmountMustBeWholeNumber",
+      "msg": "Stake amount must be a whole number (no decimals)"
+    },
+    {
+      "code": 6003,
+      "name": "MaxStakesReached",
+      "msg": "Maximum stake orders reached (20)"
+    },
+    {
+      "code": 6004,
+      "name": "InvalidOrderIndex",
+      "msg": "Order not found or invalid index"
+    },
+    {
+      "code": 6005,
+      "name": "OrderNotActive",
+      "msg": "Order is not active"
+    },
+    {
+      "code": 6006,
+      "name": "PeriodNotEnded",
+      "msg": "Stake period not ended yet"
+    },
+    {
+      "code": 6007,
+      "name": "NoInterestToClaim",
+      "msg": "No interest to claim"
+    },
+    {
+      "code": 6008,
+      "name": "NftBindingMismatch",
+      "msg": "NFT binding state mismatch"
+    },
+    {
+      "code": 6009,
+      "name": "ArithmeticOverflow",
+      "msg": "Arithmetic overflow"
+    },
+    {
+      "code": 6010,
+      "name": "TokenMintMismatch",
+      "msg": "Token mint mismatch"
+    },
+    {
+      "code": 6011,
+      "name": "Unauthorized",
+      "msg": "User not authorized"
+    },
+    {
+      "code": 6012,
+      "name": "WalletMappingNotFound",
+      "msg": "User wallet mapping not found - must bind referrer first"
+    },
+    {
+      "code": 6013,
+      "name": "UserNotInReferralSystem",
+      "msg": "User not in referral system - must bind referrer before staking"
+    },
+    {
+      "code": 6014,
+      "name": "InvalidLockedVault",
+      "msg": "Invalid locked vault PDA"
+    },
+    {
+      "code": 6015,
+      "name": "DailyDepositCapExhausted",
+      "msg": "Daily deposit cap exhausted"
+    },
+    {
+      "code": 6016,
+      "name": "DailyDepositCapExceeded",
+      "msg": "Amount exceeds daily deposit cap remaining"
+    },
+    {
+      "code": 6017,
+      "name": "UserStakeCapExceeded",
+      "msg": "User total staked exceeds per-address cap"
+    },
+    {
+      "code": 6018,
+      "name": "ClaimTooFrequent",
+      "msg": "Claim too frequent: must wait at least 1 hour between claims"
+    },
+    {
+      "code": 6019,
+      "name": "InvalidDeadAddress",
+      "msg": "Invalid dead address token account"
+    },
+    {
+      "code": 6020,
+      "name": "NftOwnershipMismatch",
+      "msg": "NFT ownership mismatch: user does not hold the NFT"
+    }
+  ],
+  "types": [
+    {
+      "name": "AirdropFundDepositedEvent",
+      "docs": [
+        "Airdrop fund deposit event"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "depositor",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_deposited",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "AirdropVault",
+      "docs": [
+        "Airdrop vault account (dedicated fund pool for NFT airdrop releases)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_token_account",
+            "docs": [
+              "Airdrop vault token account address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "docs": [
+              "Authority"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_deposited",
+            "docs": [
+              "Total deposited amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_released",
+            "docs": [
+              "Total released amount (for statistics)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Creation timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BindingInfo",
+      "docs": [
+        "Binding information"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nft_mint",
+            "docs": [
+              "NFT mint address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "docs": [
+              "Current owner"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "node_type",
+            "docs": [
+              "Node type"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "total_release",
+            "docs": [
+              "Total release amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "released_amount",
+            "docs": [
+              "Released amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "initial_bound_at",
+            "docs": [
+              "Initial binding timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "last_bound_at",
+            "docs": [
+              "Last binding timestamp"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "BindingVerificationResult",
+      "docs": [
+        "NFT binding verification result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "has_binding",
+            "docs": [
+              "Whether binding exists (PDA exists)"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "is_active",
+            "docs": [
+              "Whether binding is active (owner matches and NFT is in wallet)"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "binding_info",
+            "docs": [
+              "Binding info (None if PDA doesn't exist)"
+            ],
+            "type": {
+              "option": {
+                "defined": {
+                  "name": "BindingInfo"
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "CommunityProfitClaimedEvent",
+      "docs": [
+        "Claim community reward event",
+        "Triggered at the end of successful handler_claim_community_profit execution"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "referral_id",
+            "docs": [
+              "User's referral ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "direct_reward_amount",
+            "docs": [
+              "Direct reward amount claimed"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "team_reward_amount",
+            "docs": [
+              "Team reward amount claimed"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_amount",
+            "docs": [
+              "Total claimed amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "docs": [
+              "Operation timestamp"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CommunityStatusResult",
+      "docs": [
+        "Community status query result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "referral_id",
+            "docs": [
+              "Referral ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "parent_id",
+            "docs": [
+              "Parent ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "self_staked",
+            "docs": [
+              "Self staked amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_staked",
+            "docs": [
+              "Total staked amount (including downlines)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "direct_reward_profit",
+            "docs": [
+              "Direct reward profit (5% from direct referrals)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "team_reward_profit",
+            "docs": [
+              "Team reward profit (from level rewards)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_community_profit",
+            "docs": [
+              "Total community profit (sum of direct + team)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "level",
+            "docs": [
+              "Community level (L0~L7)"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "CurrentRatesResult",
+      "docs": [
+        "Current rates query result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "total_output",
+            "docs": [
+              "Total cumulative output across the network"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reduction_count",
+            "docs": [
+              "Current reduction count"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "rate_7d",
+            "docs": [
+              "7-day lock daily interest rate (RATE_BASIS_POINTS precision, 1_000_000 = 100%)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "rate_30d",
+            "docs": [
+              "30-day lock daily interest rate (RATE_BASIS_POINTS precision)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "rate_90d",
+            "docs": [
+              "90-day lock daily interest rate (RATE_BASIS_POINTS precision)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DiamondCollectionState",
+      "docs": [
+        "Diamond Collection state account (Diamond Node)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "minted_count",
+            "type": "u64"
+          },
+          {
+            "name": "max_supply",
+            "type": "u64"
+          },
+          {
+            "name": "boost_percentage",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DiamondOwnershipResult",
+      "docs": [
+        "Diamond NFT ownership verification result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owns_nft",
+            "type": "bool"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "nft_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_mint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "DiamondVerificationEvent",
+      "docs": [
+        "Diamond NFT verification event"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "nft_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "owns_nft",
+            "type": "bool"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GlobalState",
+      "docs": [
+        "Global state account (PDA) - stores global data for staking"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "docs": [
+              "Administrator address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "stake_token_mint",
+            "docs": [
+              "Staking token mint address (must match locked_vault)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_staked",
+            "docs": [
+              "Total staked principal"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_interest_paid",
+            "docs": [
+              "Total interest paid"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Global state creation timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved field (alignment padding)"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                7
+              ]
+            }
+          },
+          {
+            "name": "storage_pdas",
+            "docs": [
+              "9 ReferralStorage PDA addresses (computed at init, compared by key during validation)"
+            ],
+            "type": {
+              "array": [
+                "pubkey",
+                9
+              ]
+            }
+          },
+          {
+            "name": "total_output",
+            "docs": [
+              "Total cumulative output across the network (sum of all interest pool disbursements: interest + rewards + tax)",
+              "Unit: smallest token unit (9 decimals)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reduction_count",
+            "docs": [
+              "Current reduction count (number of halvings applied so far)"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "daily_deposit_cap",
+            "docs": [
+              "Current daily deposit cap (dynamically adjusted, initial 3 million tokens * 10^9)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "current_deposit_day",
+            "docs": [
+              "Current statistics day (UTC day number: unix_timestamp / 86400)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "daily_deposited",
+            "docs": [
+              "Total deposited amount for the current day"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "current_week_number",
+            "docs": [
+              "Current week number"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_pool_current",
+            "docs": [
+              "Diamond pool current week accumulation (in progress, not claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_pool_current",
+            "docs": [
+              "Gold pool current week accumulation (in progress, not claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_pool_previous",
+            "docs": [
+              "Diamond pool previous week amount (claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_pool_previous",
+            "docs": [
+              "Gold pool previous week amount (claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_pool_claimed_count",
+            "docs": [
+              "Diamond pool previous week claimed count"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "gold_pool_claimed_count",
+            "docs": [
+              "Gold pool previous week claimed count"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "stats_current_day",
+            "docs": [
+              "Current statistics day for staking (UTC day number: unix_timestamp / 86400)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "today_staked_amount",
+            "docs": [
+              "Today's total staked amount (cumulative amount from all create_stake calls today)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "last_7days_staked",
+            "docs": [
+              "Last 7 days staked amounts (fixed index array)",
+              "[0] = 7 days ago, [1] = 6 days ago, ..., [6] = today (real-time updated)"
+            ],
+            "type": {
+              "array": [
+                "u64",
+                7
+              ]
+            }
+          },
+          {
+            "name": "referral_fee_wallet",
+            "docs": [
+              "Dedicated SOL receiving address for referral binding (collects registration fee, anti-Sybil)"
+            ],
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GoldCollectionState",
+      "docs": [
+        "Gold Collection state account (Gold Node)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "minted_count",
+            "type": "u64"
+          },
+          {
+            "name": "max_supply",
+            "type": "u64"
+          },
+          {
+            "name": "boost_percentage",
+            "type": "u8"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GoldOwnershipResult",
+      "docs": [
+        "Gold NFT ownership verification result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owns_nft",
+            "type": "bool"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          },
+          {
+            "name": "nft_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_mint",
+            "type": "pubkey"
+          }
+        ]
+      }
+    },
+    {
+      "name": "GoldVerificationEvent",
+      "docs": [
+        "Gold NFT verification event"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "nft_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "collection_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "owns_nft",
+            "type": "bool"
+          },
+          {
+            "name": "balance",
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "InterestClaimedEvent",
+      "docs": [
+        "Claim interest event",
+        "Triggered at the end of successful handler_claim_interest execution"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "order_index",
+            "docs": [
+              "Claimed order slot index (0-14)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "base_interest",
+            "docs": [
+              "Base interest (excluding NFT boost, before tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "boost_interest",
+            "docs": [
+              "NFT boost interest"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_interest",
+            "docs": [
+              "Total interest (base + boost, before tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tax_amount",
+            "docs": [
+              "Tax amount (burned to dead address)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "user_receive",
+            "docs": [
+              "Net interest received by user (after tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "nft_boost_bps",
+            "docs": [
+              "NFT boost ratio (basis points, 0=no NFT)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "nft_mint",
+            "docs": [
+              "NFT Mint bound to user (Pubkey::default() if none)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "global_total_interest_paid",
+            "docs": [
+              "Global cumulative interest paid (after update)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "docs": [
+              "Operation timestamp"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "LockedTokenVault",
+      "docs": [
+        "Locked token vault account (permanently locked token pool)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "token_mint",
+            "docs": [
+              "Token mint address (fixed)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "vault_token_account",
+            "docs": [
+              "Vault token account address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "authority",
+            "docs": [
+              "Authority allowed to lock tokens"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "total_locked",
+            "docs": [
+              "Cumulative total amount deposited into the vault (only incremented on lock_tokens).",
+              "NOT the current vault balance — outflows (unstake, interest, rewards) are NOT subtracted."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Creation timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NftBindingState",
+      "docs": [
+        "NFT binding state account"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "nft_mint",
+            "docs": [
+              "NFT mint address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "owner",
+            "docs": [
+              "Current owner wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "node_type",
+            "docs": [
+              "Node type: 1=Diamond, 2=Gold"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "total_release",
+            "docs": [
+              "Total release amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "released_amount",
+            "docs": [
+              "Already released amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "initial_bound_at",
+            "docs": [
+              "Initial binding timestamp (first bind, immutable)"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "last_bound_at",
+            "docs": [
+              "Last binding timestamp (updated on rebind)"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "last_pool_claim_week",
+            "docs": [
+              "Last claimed node pool week number"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NodePoolRefreshed",
+      "docs": [
+        "Node reward pool weekly refresh event"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "week_number",
+            "docs": [
+              "New week number"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "weeks_skipped",
+            "docs": [
+              "Number of weeks skipped since last refresh"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_unclaimed_to_root",
+            "docs": [
+              "Diamond pool unclaimed amount returned to root"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_unclaimed_to_root",
+            "docs": [
+              "Gold pool unclaimed amount returned to root"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_new_pool",
+            "docs": [
+              "New diamond pool amount (last week -> claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_new_pool",
+            "docs": [
+              "New gold pool amount (last week -> claimable)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NodePoolRewardClaimed",
+      "docs": [
+        "Node reward pool claim event"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "node_type",
+            "docs": [
+              "Node type (1=Diamond, 2=Gold)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "week_number",
+            "docs": [
+              "Week number of the claimed reward"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "amount",
+            "docs": [
+              "Claimed amount"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NodePoolRewardResult",
+      "docs": [
+        "Node pool reward query result (per user)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "week_number",
+            "docs": [
+              "Week number of the reward (previous week)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "node_type",
+            "docs": [
+              "Node type (DIAMOND or GOLD)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "reward_amount",
+            "docs": [
+              "Claimable reward amount (0 if already claimed or no reward)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "is_claimed",
+            "docs": [
+              "Whether the user has already claimed this week's rewards"
+            ],
+            "type": "bool"
+          },
+          {
+            "name": "diamond_per_share",
+            "docs": [
+              "Diamond per-share claimable amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_per_share",
+            "docs": [
+              "Gold per-share claimable amount"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "NodePoolStatusResult",
+      "docs": [
+        "Node pool status query result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "current_week_number",
+            "docs": [
+              "Current week number"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_pool_current",
+            "docs": [
+              "Current week diamond pool accumulation (not claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_pool_current",
+            "docs": [
+              "Current week gold pool accumulation (not claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_pool_previous",
+            "docs": [
+              "Previous week diamond pool amount (claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_pool_previous",
+            "docs": [
+              "Previous week gold pool amount (claimable)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "diamond_pool_claimed_count",
+            "docs": [
+              "Diamond pool previous week claimed count"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "gold_pool_claimed_count",
+            "docs": [
+              "Gold pool previous week claimed count"
+            ],
+            "type": "u16"
+          },
+          {
+            "name": "diamond_per_share",
+            "docs": [
+              "Diamond per-share claimable amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "gold_per_share",
+            "docs": [
+              "Gold per-share claimable amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "user_already_claimed",
+            "docs": [
+              "Whether the user has already claimed previous week rewards"
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "PendingInterestResult",
+      "docs": [
+        "Pending interest query result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "base_interest",
+            "docs": [
+              "Base interest (without NFT boost, before tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "boost_interest",
+            "docs": [
+              "NFT boost interest"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_interest",
+            "docs": [
+              "Total interest (base + boost, before tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "after_tax",
+            "docs": [
+              "Net interest received by user after tax"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tax_amount",
+            "docs": [
+              "Tax amount"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralBindingEvent",
+      "docs": [
+        "Referral binding event",
+        "Triggered when user successfully binds a referrer"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "parent_wallet",
+            "docs": [
+              "Parent's Solana address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "parent_id",
+            "docs": [
+              "Parent's referrer ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "my_wallet",
+            "docs": [
+              "My Solana address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "my_id",
+            "docs": [
+              "My referrer ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "timestamp",
+            "docs": [
+              "Binding timestamp"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralData",
+      "docs": [
+        "Referrer data structure"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "parent_id",
+            "docs": [
+              "Parent ID (e.g. 1000002), 0 means root node"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Timestamp of creation"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "total_referrals",
+            "docs": [
+              "Total number of downline referrals (excluding self)"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "total_staked",
+            "docs": [
+              "Total staked amount of downline (including self, in tokens)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "self_staked",
+            "docs": [
+              "Self staked amount (excluding downlines, in tokens)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "direct_reward_profit",
+            "docs": [
+              "Direct reward profit (5% from direct referrals, in tokens)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "team_reward_profit",
+            "docs": [
+              "Team reward profit (from level rewards, in tokens)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralManager",
+      "docs": [
+        "Management account, stores current active PDA index"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "docs": [
+              "Administrator"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "current_pda_index",
+            "docs": [
+              "Current active PDA index (1-9)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "initialized",
+            "docs": [
+              "Whether initialized"
+            ],
+            "type": "bool"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ReferralStorage",
+      "docs": [
+        "Referrer storage PDA account (zero-copy design)",
+        "",
+        "Data layout:",
+        "- 8 bytes: discriminator (added automatically by Anchor)",
+        "- 1 byte:  index (PDA index 1-9)",
+        "- 4 bytes: count (current number of records)",
+        "- 3 bytes: reserved (aligned to 16 bytes)",
+        "- N * 56 bytes: ReferralData records (stored directly in account raw bytes)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "index",
+            "docs": [
+              "PDA index (1-9)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "count",
+            "docs": [
+              "Currently stored count"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved field (for alignment)"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                3
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "StakeCreatedEvent",
+      "docs": [
+        "Stake created event",
+        "Triggered at the end of successful handler_create_stake execution"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "referral_id",
+            "docs": [
+              "User's referral ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "order_index",
+            "docs": [
+              "Order slot index in user account (0-14)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "amount",
+            "docs": [
+              "Staked amount (smallest unit)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "period_type",
+            "docs": [
+              "Staking period type (1=7 days, 2=30 days, 3=90 days)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "initial_daily_rate",
+            "docs": [
+              "Daily rate snapshot at creation (basis points, 10000=100%)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "start_time",
+            "docs": [
+              "Staking start timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "end_time",
+            "docs": [
+              "Staking expiry timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "global_total_staked",
+            "docs": [
+              "Global total staked (after update)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "daily_deposited",
+            "docs": [
+              "Daily deposited total (after this deposit)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "daily_deposit_cap",
+            "docs": [
+              "Daily deposit cap"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "user_stake_cap",
+            "docs": [
+              "Per-address staking cap applied to this transaction"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "StakeOrder",
+      "docs": [
+        "Single staking order"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "docs": [
+              "Staking amount (in smallest unit)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "period_type",
+            "docs": [
+              "Staking period type (1=7 days, 2=30 days, 3=90 days)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "start_time",
+            "docs": [
+              "Staking start timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "end_time",
+            "docs": [
+              "Staking end timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "last_interest_time",
+            "docs": [
+              "Last interest calculation timestamp"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "accumulated_interest",
+            "docs": [
+              "CI-08: Accumulated unclaimed base interest (without NFT boost)",
+              "Zeroed on claim/unstake; new_interest is added hourly in between"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "claimed_interest",
+            "docs": [
+              "CI-08: Cumulative total pre-tax interest claimed (including NFT boost)",
+              "On each claim/unstake: += total_interest (base + boost)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "status",
+            "docs": [
+              "Order status (0=empty, 1=active, 2=completed, 3=cancelled)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "initial_daily_rate",
+            "docs": [
+              "Initial daily interest rate at order creation time (in RATE_BASIS_POINTS, 1_000_000 = 100%)",
+              "e.g. 7-day: 5000 (0.5%), 30-day: 7000 (0.7%), 90-day: 10000 (1.0%)",
+              "Rate is snapshot at stake creation; existing orders are NOT affected by subsequent reductions."
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved field (for alignment)"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                5
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokenReleaseInfo",
+      "docs": [
+        "Token release query result"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "releasable_amount",
+            "docs": [
+              "Current claimable amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_released",
+            "docs": [
+              "Total released amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_release",
+            "docs": [
+              "Total release limit"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "binding_days",
+            "docs": [
+              "Binding days"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokensClaimedEvent",
+      "docs": [
+        "Token claim event"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "type": "pubkey"
+          },
+          {
+            "name": "nft_mint",
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "total_released",
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "TokensLockedEvent",
+      "docs": [
+        "Token locked event",
+        "Triggered when tokens are locked into the vault"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "amount",
+            "docs": [
+              "Locked amount"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_locked",
+            "docs": [
+              "Total locked amount after this operation"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "docs": [
+              "Lock timestamp"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UnstakedEvent",
+      "docs": [
+        "Unstake event",
+        "Triggered at the end of successful handler_unstake execution"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "user",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "referral_id",
+            "docs": [
+              "User's referral ID"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "order_index",
+            "docs": [
+              "Unstaked order slot index (0-14)"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "principal",
+            "docs": [
+              "Returned principal"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "base_interest",
+            "docs": [
+              "Base interest (excluding NFT boost, before tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "boost_interest",
+            "docs": [
+              "NFT boost interest"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_interest",
+            "docs": [
+              "Total interest (base + boost, before tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "tax_amount",
+            "docs": [
+              "Tax amount (burned to dead address)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "interest_to_user",
+            "docs": [
+              "Net interest received by user (after tax)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_to_user",
+            "docs": [
+              "Total amount received by user (principal + net interest)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "nft_boost_bps",
+            "docs": [
+              "NFT boost ratio (basis points, 0=no NFT)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "nft_mint",
+            "docs": [
+              "NFT Mint bound to user (Pubkey::default() if none)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "global_total_staked",
+            "docs": [
+              "Global total staked (after update)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "global_total_interest_paid",
+            "docs": [
+              "Global cumulative interest paid (after update)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "timestamp",
+            "docs": [
+              "Operation timestamp"
+            ],
+            "type": "i64"
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserStakeAccount",
+      "docs": [
+        "User staking account (PDA)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "active_count",
+            "docs": [
+              "Current active order count"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "total_principal",
+            "docs": [
+              "Total staked principal (sum of all active orders)"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "total_claimed_interest",
+            "docs": [
+              "Total claimed interest"
+            ],
+            "type": "u64"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          },
+          {
+            "name": "reserved",
+            "docs": [
+              "Reserved field"
+            ],
+            "type": {
+              "array": [
+                "u8",
+                6
+              ]
+            }
+          },
+          {
+            "name": "orders",
+            "docs": [
+              "Staking orders array (fixed MAX_STAKES_PER_USER slots)"
+            ],
+            "type": {
+              "array": [
+                {
+                  "defined": {
+                    "name": "StakeOrder"
+                  }
+                },
+                20
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "UserState",
+      "docs": [
+        "User state account (tracks user's current NFT binding)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "bound_nft_mint",
+            "docs": [
+              "Currently bound NFT mint (Pubkey::default() if no binding)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "bump",
+            "docs": [
+              "PDA bump seed"
+            ],
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WalletIdMapping",
+      "docs": [
+        "Wallet ID mapping account"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "docs": [
+              "Wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "referral_id",
+            "docs": [
+              "Corresponding referrer ID"
+            ],
+            "type": "u32"
+          }
+        ]
+      }
+    },
+    {
+      "name": "WalletInfoResult",
+      "docs": [
+        "Wallet information result (includes parent wallet address)"
+      ],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "wallet",
+            "docs": [
+              "User wallet address"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "referral_id",
+            "docs": [
+              "Referral ID (e.g. 1000002)"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "parent_id",
+            "docs": [
+              "Parent ID (e.g. 1000002), 0 means root node"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "parent_wallet",
+            "docs": [
+              "Parent wallet address (Pubkey::default() if root node)"
+            ],
+            "type": "pubkey"
+          },
+          {
+            "name": "created_at",
+            "docs": [
+              "Timestamp of creation"
+            ],
+            "type": "i64"
+          },
+          {
+            "name": "total_referrals",
+            "docs": [
+              "Total number of downline referrals (excluding self)"
+            ],
+            "type": "u32"
+          },
+          {
+            "name": "total_staked",
+            "docs": [
+              "Total staked amount of downline (including self, in tokens)"
+            ],
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ]
+}
