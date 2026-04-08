@@ -11,11 +11,8 @@ const {
   sendAndConfirmTransaction,
   LAMPORTS_PER_SOL
 } = require('@solana/web3.js');
-const { PinPetSdk, getDefaultOptions, SPINPET_PROGRAM_ID } = require('pinpet-sdk');
 const anchor = require('@coral-xyz/anchor');
-const Decimal = require('decimal.js');
 const { getAssociatedTokenAddressSync, createTransferInstruction, createAssociatedTokenAccountInstruction, TOKEN_PROGRAM_ID } = require('@solana/spl-token');
-const { Program, AnchorProvider } = require('@coral-xyz/anchor');
 const fs = require('fs');
 const path = require('path');
 
@@ -40,8 +37,6 @@ const REFERRAL_MANAGER_SEED = "referral_manager";
 const USER_STAKE_SEED = "user_stake";
 const GLOBAL_STATE_SEED = "global_state";
 const LOCKED_TOKEN_VAULT_SEED = "locked_token_vault_seed";
-const AIRDROP_VAULT_SEED = "airdrop_vault_seed";
-const USER_STATE_SEED = "user_state";
 
 function getReferralStoragePdas() {
     const storageAccounts = [];
@@ -55,54 +50,25 @@ function getReferralStoragePdas() {
     return storageAccounts;
 }
 
-function getUserStakeAccountPda(walletPublicKey) {
-    const [pda] = PublicKey.findProgramAddressSync(
-        [USER_STAKE_SEED, walletPublicKey.toBuffer()],
-        VELA_PROGRAM_ID,
-    );
-    return pda;
-}
-
-function getLockedVaultPda(tokenMint) {
-    const [pda] = PublicKey.findProgramAddressSync(
-        [LOCKED_TOKEN_VAULT_SEED, tokenMint.toBuffer()],
-        VELA_PROGRAM_ID,
-    );
-    return pda;
-}
-
 function getWalletMappingPda(walletPublicKey) {
     const [pda] = PublicKey.findProgramAddressSync(
-        [WALLET_ID_MAPPING_SEED, walletPublicKey.toBuffer()],
+        [WALLET_ID_MAPPING_SEED, walletPublicKey.toBuffer()], 
         VELA_PROGRAM_ID,
     );
     return pda;
 }
 
 function getVelaProgram(connection, wallet) {
-    const provider = new AnchorProvider(
+    const provider = new anchor.AnchorProvider(
         connection, wallet, { commitment: connection.commitment || 'confirmed'}
     ); 
-    return new Program(idl, provider);
+    return new anchor.Program(idl, provider);
 }
 
-async function getReferraFeelWallet(program, globalStatePda) {
-    try {
-        const gs = await program.account.globalState.fetch(globalStatePda);
-        return gs.referralFeeWallet;
-    } catch (err) {
-        console.error(`无法获取 GlobalState: ${err.message}`);
-    }
+async function getWalletId(program, walletPublicKey) {
+    const pda = getWalletMappingPda(walletPublicKey);
+    return (await program.account.walletIdMapping.fetch(pda)).referralId;
 }
-  
-async function getWalletId(connection, wallet) {
-    const pda = getWalletMappingPda(wallet);
-    const account = await connection.getAccountInfo(pda, connection.commitment ?? 'confirmed');
-    if (!account?.data || account.data.length < 44) return null;
-    const data = account.data instanceof Uint8Array ? account.data : new Uint8Array(account.data);
-    const referralId = new DataView(data.buffer, data.byteOffset + 40, 4).getUint32(0, true);
-    return Number.isFinite(referralId) ? referralId : null;
-} 
 
 async function addReferral(connection, wallet, walletIndex) {
     const program = getVelaProgram(connection, new anchor.Wallet(wallet)); 
@@ -110,8 +76,8 @@ async function addReferral(connection, wallet, walletIndex) {
     const storages = getReferralStoragePdas(connection);  
     const [manager] = PublicKey.findProgramAddressSync([REFERRAL_MANAGER_SEED], VELA_PROGRAM_ID);
     const [globalStatePda] = PublicKey.findProgramAddressSync([GLOBAL_STATE_SEED], VELA_PROGRAM_ID);
-    const referralFeeWallet = await getReferraFeelWallet(program, globalStatePda);
-    const parentId = await getWalletId(connection, new PublicKey(config.referralAddress));
+    const referralFeeWallet = (await program.account.globalState.fetch(globalStatePda)).referralFeeWallet;
+    const parentId = await getWalletId(program, new PublicKey(config.referralAddress));
     
     try {
         const tx = await program.methods
@@ -140,20 +106,19 @@ async function addReferral(connection, wallet, walletIndex) {
             .rpc(); 
         console.log(`钱包 #${walletIndex} 绑定推荐人成功！ ${tx}`);
     } catch (err) {
-        console.error(`钱包 #${walletIndex} 绑定推荐人失败: ${err}`);
+        console.error(`钱包 #${walletIndex} 绑定推荐人失败: 推荐人已存在。`);
     }
 }
 
 async function createStake(connection, wallet, walletIndex, tokenMint, amount, periodType) {
     const program = getVelaProgram(connection, new anchor.Wallet(wallet)); 
-    const userStakeAccount = getUserStakeAccountPda(wallet.publicKey);
+    const [userStakeAccount] = PublicKey.findProgramAddressSync([USER_STAKE_SEED, wallet.publicKey.toBuffer()], VELA_PROGRAM_ID);
     const [globalState] = PublicKey.findProgramAddressSync([GLOBAL_STATE_SEED], VELA_PROGRAM_ID);
     const walletMapping = getWalletMappingPda(wallet.publicKey);
-    const storages = await getReferralStoragePdas(connection);
-    const lockedVault = getLockedVaultPda(tokenMint);
+    const storages = getReferralStoragePdas(connection);
+    const [lockedVault] = PublicKey.findProgramAddressSync([LOCKED_TOKEN_VAULT_SEED, tokenMint.toBuffer()], VELA_PROGRAM_ID);
     const userTokenAccount = getAssociatedTokenAddressSync(tokenMint, wallet.publicKey);
-    const vaultAccount = await program.account.lockedTokenVault.fetch(lockedVault);
-    const vaultTokenAccount = vaultAccount.vaultTokenAccount;
+    const vaultTokenAccount = (await program.account.lockedTokenVault.fetch(lockedVault)).vaultTokenAccount;
       
     try {
         const tx = await program.methods
@@ -219,7 +184,6 @@ async function generateChildWallets(mnemonic, index) {
     }
     const seed = await bip39.mnemonicToSeed(mnemonic);
     const seedHex = seed.toString('hex');
-    
     const path = `m/44'/501'/${index}'/0'`;
     const derivedSeed = derivePath(path, seedHex).key;
     const keypair = Keypair.fromSeed(derivedSeed);
@@ -279,8 +243,8 @@ async function run() {
    
     const currentIndex = getCheckpoint();
     console.log(`[启动] 当前断点序号: ${currentIndex}，从此处继续...`);
-    for (let i = currentIndex; i < config.childWalletCount; i++) {
-        const wallet = await generateChildWallets(mnemonic, i);
+    for (let index = currentIndex; index < config.childWalletCount; index++) {
+        const wallet = await generateChildWallets(mnemonic, index);
         const transaction = new Transaction().add(
             SystemProgram.transfer({
                 fromPubkey: mainWallet.publicKey,
@@ -290,15 +254,15 @@ async function run() {
         );
         await sendAndConfirmTransaction(connection, transaction, [mainWallet]);
 
-        const tokenAmount = await transferToken(connection, mainWallet, wallet, i, new PublicKey(config.mintAddress));
+        const tokenAmount = await transferToken(connection, mainWallet, wallet, index, new PublicKey(config.mintAddress));
         if (tokenAmount === 0) {
             console.error("请检查主钱包代币余额，充值后重新启动");
             process.exit(0);
         }
-        await addReferral(connection, wallet, i);
+        await addReferral(connection, wallet, index);
 
         for (let attempt = 0; attempt < 3; attempt++) {
-            const result = await createStake(connection, wallet, i, new PublicKey(config.mintAddress), tokenAmount, 3);
+            const result = await createStake(connection, wallet, index, new PublicKey(config.mintAddress), tokenAmount, 3);
             if (result) {
                 break;
             } else {
@@ -309,7 +273,7 @@ async function run() {
                 await new Promise(r => setTimeout(r, 2000));
             }
         }
-        saveCheckpoint(i + 1);
+        saveCheckpoint(index + 1);
     }
 }
 
