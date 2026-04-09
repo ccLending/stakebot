@@ -156,12 +156,12 @@ async function waitUntilMidnight() {
     const end = new Date(now); 
     end.setUTCHours(0,10,0,0);      // 0点10分
 
-    if (now >= start && now <= end) return;     //如果处在这个区间，无需等得
+    if (now >= start && now <= end) return;     //如果处在这个区间，无需等待
   
     const next = new Date(now);
     next.setUTCHours(0,0,0,0);
     if (now >= next) next.setUTCDate(next.getUTCDate() + 1);  // 下一个0点
-    const delay = next - now;               // 计算间隔
+    const delay = next - now;               // 计算间隔毫秒数
     await new Promise(r => setTimeout(r, delay));
 }
 
