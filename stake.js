@@ -12,7 +12,7 @@ const {
   LAMPORTS_PER_SOL
 } = require('@solana/web3.js');
 const anchor = require('@coral-xyz/anchor');
-const { getAssociatedTokenAddressSync, TOKEN_PROGRAM_ID } = require('@solana/spl-token');
+const { getAssociatedTokenAddressSync, createTransferInstruction, TOKEN_PROGRAM_ID } = require('@solana/spl-token');
 const fs = require('fs');
 const path = require('path');
 
@@ -165,6 +165,31 @@ async function waitUntilMidnight() {
     await new Promise(r => setTimeout(r, delay));
 }
 
+async function sweepSubWallet(connection, subWallet, mainWalletPublicKey, tokenMint, tokenAmount, ataMainWallet) {
+    const ataSubWallet = getAssociatedTokenAddressSync(tokenMint, subWallet.publicKey);
+    const transaction = new Transaction().add(
+        createTransferInstruction(
+            ataSubWallet,
+            ataMainWallet,
+            subWallet.publicKey,
+            tokenAmount
+        )
+    );
+    await sendAndConfirmTransaction(connection, transaction, [subWallet]);
+
+    const solBalance = await connection.getBalance(subWallet.publicKey);
+    const feeReserve = 5000;
+    if (solBalance <= feeReserve) return;
+    const tx = new Transaction().add(
+        SystemProgram.transfer({
+            fromPubkey: subWallet.publicKey,
+            toPubkey: mainWalletPublicKey,
+            lamports: solBalance - feeReserve, 
+        })
+    );
+    await sendAndConfirmTransaction(connection, tx, [subWallet]);
+}
+
 async function run() {
     const { default: PQueue } = await import('p-queue');
     const queue = new PQueue({ concurrency: 8 }); 
@@ -201,10 +226,26 @@ async function run() {
     await queue.onIdle(); 
     console.log(`[完成]质押处理完成 成功: ${successCount}, 失败: ${failureCount}`);
 
-    // 记录失败列表用于回收SOL和代币
+    // 记录失败列表，用于后续再质押时排除。
     const subDir = path.join(__dirname, "checkpoints");
     const checkpoint_file = path.join(subDir, `stake-${config.startIndex}-${config.endIndex}.json`);
     fs.writeFileSync(checkpoint_file, JSON.stringify({ failedIndices }, null, 2));
+    // 回收失败列表中的代币和SOL
+    if (failureCount > 0) {
+        console.log("开始回收失败列表中的代币和SOL...");
+        console.log(failedIndices);
+        const ataMainWallet = getAssociatedTokenAddressSync(tokenMint, mainWallet.publicKey);
+        for (let i = 0; i < failedIndices.length; i++) {
+            const subWallet = walletPool.find(w => w.index === failedIndices[i]);
+            try {
+                sweepSubWallet(connection, subWallet.keypair, mainWallet.publicKey, tokenMint, subWallet.amount, ataMainWallet);
+                console.log(`子钱包 #${subWallet.index} 回收成功`);
+            } catch (err) {
+                console.error(`子钱包 #${subWallet.index} 回收失败`);
+            }
+        }
+        console.log("回收完毕。");
+    }
 }
 
 run();
